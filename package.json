@@ -8,8 +8,7 @@
     "build": "tsc",
     "test": "jest",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,css}' --loglevel warn",
-    "lint": "eslint './src/**/*.ts'",
-    "tsc": "tsc -p ."
+    "lint": "eslint './src/**/*.ts'"
   },
   "repository": {
     "type": "git",
