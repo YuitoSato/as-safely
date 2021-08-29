@@ -1,0 +1,50 @@
+{
+  "name": "as-safely",
+  "version": "1.0.0",
+  "description": "TypeScript Library for safe type assertion",
+  "main": "./dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prettier": "prettier --write 'src/**/*.{ts,tsx,css}' --loglevel warn",
+    "lint": "eslint './src/**/*.ts'",
+    "tsc": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YuitoSato/as-safely.git"
+  },
+  "keywords": [
+    "type-assertion"
+  ],
+  "author": "YuitoSato",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YuitoSato/as-safely/issues"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css}": [
+      "eslint --fix",
+      "prettier --write --loglevel warn"
+    ]
+  },
+  "homepage": "https://github.com/YuitoSato/as-safely#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.1.0",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2",
+    "@typescript-eslint/eslint-plugin": "4.22.1",
+    "@typescript-eslint/parser": "4.22.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "2.22.1",
+    "lint-staged": "^11.1.2"
+  }
+}
