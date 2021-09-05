@@ -1,11 +1,13 @@
 import {
   asSafely,
+  isArray,
   isBigint,
   isBoolean,
   isDate,
   isNull,
   isNumber,
   isString,
+  isStringArray,
   isSymbol,
   isUndefined,
 } from './as-safely';
@@ -71,165 +73,150 @@ describe('asSafely', () => {
       );
     });
   });
+
+  describe('when multiple conditions are provided', () => {
+    it('should predict type when type assertion is succeeded', () => {
+      const unknownUndefined = undefined as unknown;
+      expect(asSafely(unknownUndefined, [isString, isUndefined])).toStrictEqual(undefined);
+      const unknownString = '1' as unknown;
+      expect(asSafely(unknownString, [isString, isUndefined])).toStrictEqual('1');
+    });
+
+    it('should throw an error when type assertion is failed', () => {
+      const unknown = 1 as unknown;
+      expect(() => asSafely(unknown, [isString, isUndefined])).toThrow(
+        `type assertion is failed. object type: number. object keys: `
+      );
+    });
+  });
 });
 
 describe('isString', () => {
-  test('type assertion should be succeeded when string is provided', () => {
+  test('should return true when string is provided', () => {
     const unknown: unknown = 'str';
-    let str: string = '';
-    if (isString(unknown)) {
-      str = unknown;
-    }
-    expect(str).toStrictEqual('str');
+    expect(isString(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when string is not provided', () => {
+  test('should return false when string is not provided', () => {
     const unknown: unknown = 1;
-    let str: string = '';
-    if (isString(unknown)) {
-      str = unknown;
-    }
-    expect(str).toStrictEqual('');
+    expect(isString(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isBoolean', () => {
-  test('type assertion should be succeeded when boolean is provided', () => {
+  test('should return true when boolean is provided', () => {
     const unknown: unknown = true;
-    let boolean: boolean = false;
-    if (isBoolean(unknown)) {
-      boolean = unknown;
-    }
-    expect(boolean).toStrictEqual(true);
+    expect(isBoolean(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when boolean is not provided', () => {
+  test('should return false when boolean is not provided', () => {
     const unknown: unknown = 1;
-    let boolean: boolean = false;
-    if (isBoolean(unknown)) {
-      boolean = unknown;
-    }
-    expect(boolean).toStrictEqual(false);
+    expect(isBoolean(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isNumber', () => {
-  test('type assertion should be succeeded when number is provided', () => {
+  test('should return true when number is provided', () => {
     const unknown: unknown = 1;
-    let number: number = 0;
-    if (isNumber(unknown)) {
-      number = unknown;
-    }
-    expect(number).toStrictEqual(1);
+    expect(isNumber(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when number is not provided', () => {
+  test('should return false when number is not provided', () => {
     const unknown: unknown = '1';
-    let number: number = 0;
-    if (isNumber(unknown)) {
-      number = unknown;
-    }
-    expect(number).toStrictEqual(0);
+    expect(isNumber(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isSymbol', () => {
-  test('type assertion should be succeeded when symbol is provided', () => {
+  test('should return true when symbol is provided', () => {
     const unknown: unknown = Symbol(1);
-    let symbol: symbol = Symbol(0);
-    if (isSymbol(unknown)) {
-      symbol = unknown;
-    }
-    expect(symbol).toStrictEqual(unknown);
+    expect(isSymbol(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when symbol is not provided', () => {
+  test('should return false when symbol is not provided', () => {
     const unknown: unknown = 1;
-    let symbol: symbol = Symbol(0);
-    if (isSymbol(unknown)) {
-      symbol = unknown;
-    }
-    expect(symbol).toStrictEqual(symbol);
+    expect(isSymbol(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isBigint', () => {
-  test('type assertion should be succeeded when bigint is provided', () => {
+  test('should return true when bigint is provided', () => {
     const unknown: unknown = BigInt('1');
-    let bigint: bigint = BigInt('0');
-    if (isBigint(unknown)) {
-      bigint = unknown;
-    }
-    expect(bigint).toStrictEqual(BigInt('1'));
+    expect(isBigint(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when bigint is not provided', () => {
+  test('should return false when bigint is not provided', () => {
     const unknown: unknown = 1;
-    let bigint: bigint = BigInt('0');
-
-    if (isBigint(unknown)) {
-      bigint = unknown;
-    }
-    expect(bigint).toStrictEqual(BigInt('0'));
+    expect(isBigint(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isUndefined', () => {
-  test('type assertion should be succeeded when undefined is provided', () => {
+  test('should return true when undefined is provided', () => {
     const unknown: unknown = undefined;
-    let undefinedValue: undefined | number = 1;
-    if (isUndefined(unknown)) {
-      undefinedValue = unknown;
-    }
-    expect(undefinedValue).toStrictEqual(undefined);
+    expect(isUndefined(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when undefined is not provided', () => {
+  test('should return false when undefined is not provided', () => {
     const unknown: unknown = '1';
-    let undefinedValue: undefined | number = 1;
-    if (isUndefined(unknown)) {
-      undefinedValue = unknown;
-    }
-    expect(undefinedValue).toStrictEqual(1);
+    expect(isUndefined(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isNull', () => {
-  test('type assertion should be succeeded when null is provided', () => {
+  test('should return true when null is provided', () => {
     const unknown: unknown = null;
-    let nullValue: null | number = 1;
-    if (isNull(unknown)) {
-      nullValue = unknown;
-    }
-    expect(nullValue).toStrictEqual(null);
+    expect(isNull(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when null is not provided', () => {
+  test('should return false when null is not provided', () => {
     const unknown: unknown = '1';
-    let nullValue: null | number = 1;
-    if (isNull(unknown)) {
-      nullValue = unknown;
-    }
-    expect(nullValue).toStrictEqual(1);
+    expect(isNull(unknown)).toStrictEqual(false);
   });
 });
 
 describe('isDate', () => {
-  test('type assertion should be succeeded when date is provided', () => {
+  test('should return true when date is provided', () => {
     const unknown: unknown = new Date(2021, 1, 1);
-    let date: Date = new Date(2020, 1, 1);
-    if (isDate(unknown)) {
-      date = unknown;
-    }
-    expect(date.getFullYear()).toStrictEqual(2021);
+    expect(isDate(unknown)).toStrictEqual(true);
   });
 
-  test('type assertion should be failed when date is not provided', () => {
+  test('should return false when date is not provided', () => {
     const unknown: unknown = 1;
-    let date: Date = new Date(2020, 1, 1);
-    if (isDate(unknown)) {
-      date = unknown;
-    }
-    expect(date.getFullYear()).toStrictEqual(2020);
+    expect(isDate(unknown)).toStrictEqual(false);
+  });
+});
+
+describe('isArray', () => {
+  test('should return true when array is provided', () => {
+    const unknown: unknown = ['a', 'b'];
+    expect(isArray(unknown)).toStrictEqual(true);
+  });
+
+  test('should return true when empty array is provided', () => {
+    const unknown: unknown = [];
+    expect(isArray(unknown)).toStrictEqual(true);
+  });
+
+  test('should return false when array is not provided', () => {
+    const unknown: unknown = 1;
+    expect(isArray(unknown)).toStrictEqual(false);
+  });
+});
+
+describe('isStringArray', () => {
+  test('should return true when string array is provided', () => {
+    const unknown: unknown = ['a', 'b'];
+    expect(isStringArray(unknown)).toStrictEqual(true);
+  });
+
+  test('should return true when empty array is provided', () => {
+    const unknown: unknown = [];
+    expect(isStringArray(unknown)).toStrictEqual(true);
+  });
+
+  test('should return false when string array is not provided', () => {
+    const unknown: unknown = ['a', 1];
+    expect(isStringArray(unknown)).toStrictEqual(false);
   });
 });

@@ -1,16 +1,21 @@
-const asSafely = <RESULT extends TARGET, TARGET = unknown, OR_ELSE = RESULT>(
+const asSafely = <RESULT extends TARGET, TARGET = unknown, OR_ELSE = RESULT, RESULT2 = RESULT>(
   obj: TARGET,
-  condition: (obj: unknown) => obj is RESULT,
+  condition:
+    | ((obj: unknown) => obj is RESULT)
+    | [(obj: unknown) => obj is RESULT, (obj: unknown) => obj is RESULT2],
   orElse?: (obj: TARGET) => OR_ELSE
-): RESULT | OR_ELSE => {
-  if (condition(obj)) {
-    return obj;
+): RESULT | RESULT2 | OR_ELSE => {
+  if (!isArray(condition) && condition(obj)) {
+    return obj as RESULT;
+  }
+  if (isArray(condition) && condition.length > 0 && condition.some((c) => c(obj))) {
+    return obj as RESULT | RESULT2;
   }
   if (orElse != null) {
     return orElse(obj);
   }
   throw new Error(
-    `type assertion is failed. object type: ${typeof obj}. object keys: ${Object.keys(obj)}`
+    `type assertion is failed. object type: ${typeof obj}. object keys: ${obj && Object.keys(obj)}`
   );
 };
 
@@ -22,5 +27,19 @@ const isBigint = (obj: unknown): obj is bigint => typeof obj === 'bigint';
 const isUndefined = (obj: unknown): obj is undefined => typeof obj === 'undefined';
 const isNull = (obj: unknown): obj is null => obj === null;
 const isDate = (obj: unknown): obj is Date => obj instanceof Date;
+const isArray = (obj: unknown): obj is unknown[] => Array.isArray(obj);
+const isStringArray = (obj: unknown): obj is string[] => isArray(obj) && obj.every(isString);
 
-export { asSafely, isString, isBoolean, isNumber, isSymbol, isBigint, isUndefined, isNull, isDate };
+export {
+  asSafely,
+  isString,
+  isBoolean,
+  isNumber,
+  isSymbol,
+  isBigint,
+  isUndefined,
+  isNull,
+  isDate,
+  isArray,
+  isStringArray,
+};
