@@ -3,6 +3,7 @@ const asSafely = <RESULT extends TARGET, TARGET = unknown, OR_ELSE = RESULT, RES
   condition:
     | ((obj: unknown) => obj is RESULT)
     | [(obj: unknown) => obj is RESULT, (obj: unknown) => obj is RESULT2],
+  // eslint-disable-next-line no-unused-vars
   orElse?: (obj: TARGET) => OR_ELSE
 ): RESULT | RESULT2 | OR_ELSE => {
   if (!Array.isArray(condition) && condition(obj)) {
