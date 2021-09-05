@@ -5,10 +5,10 @@ const asSafely = <RESULT extends TARGET, TARGET = unknown, OR_ELSE = RESULT, RES
     | [(obj: unknown) => obj is RESULT, (obj: unknown) => obj is RESULT2],
   orElse?: (obj: TARGET) => OR_ELSE
 ): RESULT | RESULT2 | OR_ELSE => {
-  if (!isArray(condition) && condition(obj)) {
+  if (!Array.isArray(condition) && condition(obj)) {
     return obj as RESULT;
   }
-  if (isArray(condition) && condition.length > 0 && condition.some((c) => c(obj))) {
+  if (Array.isArray(condition) && condition.length > 0 && condition.some((c) => c(obj))) {
     return obj as RESULT | RESULT2;
   }
   if (orElse != null) {
@@ -27,8 +27,9 @@ const isBigint = (obj: unknown): obj is bigint => typeof obj === 'bigint';
 const isUndefined = (obj: unknown): obj is undefined => typeof obj === 'undefined';
 const isNull = (obj: unknown): obj is null => obj === null;
 const isDate = (obj: unknown): obj is Date => obj instanceof Date;
-const isArray = (obj: unknown): obj is unknown[] => Array.isArray(obj);
-const isStringArray = (obj: unknown): obj is string[] => isArray(obj) && obj.every(isString);
+const isArray = <ELEMENT = unknown>(elementCondition: (element: unknown) => element is ELEMENT) => {
+  return (obj: unknown): obj is ELEMENT[] => Array.isArray(obj) && obj.every(elementCondition);
+};
 
 export {
   asSafely,
@@ -41,5 +42,4 @@ export {
   isNull,
   isDate,
   isArray,
-  isStringArray,
 };

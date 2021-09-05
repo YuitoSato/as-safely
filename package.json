@@ -8,7 +8,8 @@
     "build": "tsc",
     "test": "jest",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,css}' --loglevel warn",
-    "lint": "eslint './src/**/*.ts'"
+    "lint": "eslint './src/**/*.ts'",
+    "lintinit": "eslint --init",
   },
   "repository": {
     "type": "git",
@@ -35,15 +36,16 @@
   "homepage": "https://github.com/YuitoSato/as-safely#readme",
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
     "jest": "^27.1.0",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.5",
-    "typescript": "^4.4.2",
-    "@typescript-eslint/eslint-plugin": "4.22.1",
-    "@typescript-eslint/parser": "4.22.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "2.22.1",
-    "lint-staged": "^11.1.2"
+    "typescript": "^4.4.2"
   }
 }

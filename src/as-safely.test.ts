@@ -7,7 +7,6 @@ import {
   isNull,
   isNumber,
   isString,
-  isStringArray,
   isSymbol,
   isUndefined,
 } from './as-safely';
@@ -188,35 +187,18 @@ describe('isDate', () => {
 });
 
 describe('isArray', () => {
-  test('should return true when array is provided', () => {
-    const unknown: unknown = ['a', 'b'];
-    expect(isArray(unknown)).toStrictEqual(true);
-  });
-
-  test('should return true when empty array is provided', () => {
-    const unknown: unknown = [];
-    expect(isArray(unknown)).toStrictEqual(true);
-  });
-
-  test('should return false when array is not provided', () => {
-    const unknown: unknown = 1;
-    expect(isArray(unknown)).toStrictEqual(false);
-  });
-});
-
-describe('isStringArray', () => {
   test('should return true when string array is provided', () => {
     const unknown: unknown = ['a', 'b'];
-    expect(isStringArray(unknown)).toStrictEqual(true);
+    expect(isArray(isString)(unknown)).toStrictEqual(true);
   });
 
   test('should return true when empty array is provided', () => {
     const unknown: unknown = [];
-    expect(isStringArray(unknown)).toStrictEqual(true);
+    expect(isArray(isString)(unknown)).toStrictEqual(true);
   });
 
   test('should return false when string array is not provided', () => {
     const unknown: unknown = ['a', 1];
-    expect(isStringArray(unknown)).toStrictEqual(false);
+    expect(isArray(isString)(unknown)).toStrictEqual(false);
   });
 });
