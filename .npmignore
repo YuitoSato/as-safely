@@ -2,8 +2,7 @@ src/
 .idea/
 node_modules/
 .gitignore
+.eslintrc.js
 jest.config.js
-package.json
 package-lock.json
-README.md
 tsconfig.json
