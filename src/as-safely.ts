@@ -27,7 +27,7 @@ const isSymbol = (obj: unknown): obj is symbol => typeof obj === 'symbol';
 const isBigint = (obj: unknown): obj is bigint => typeof obj === 'bigint';
 const isUndefined = (obj: unknown): obj is undefined => typeof obj === 'undefined';
 const isNull = (obj: unknown): obj is null => obj === null;
-const isDate = (obj: unknown): obj is Date => obj instanceof Date;
+const isDate = (obj: unknown): obj is Date => obj instanceof Date && !isNaN(obj.getTime());
 const isArray = <ELEMENT = unknown>(elementCondition: (element: unknown) => element is ELEMENT) => {
   return (obj: unknown): obj is ELEMENT[] => Array.isArray(obj) && obj.every(elementCondition);
 };

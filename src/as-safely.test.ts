@@ -184,6 +184,11 @@ describe('isDate', () => {
     const unknown: unknown = 1;
     expect(isDate(unknown)).toStrictEqual(false);
   });
+
+  test('should return false when invalid date is provided', () => {
+    const unknown: unknown = new Date('test');
+    expect(isDate(unknown)).toStrictEqual(false);
+  });
 });
 
 describe('isArray', () => {
